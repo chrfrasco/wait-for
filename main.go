@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 	"os"
 	"strings"
@@ -30,15 +31,16 @@ func waitFor(url string, wg *sync.WaitGroup) {
 	url = normalize(url)
 
 	for {
-		res, err := http.Get(url)
+		resp, err := http.Get(url)
 		if err != nil {
-			continue
+			log.Fatalf("could not fetch %s: %v", url, err)
 		}
 
-		if res != nil {
-			time.Sleep(time.Millisecond * 100)
+		if 200 <= resp.StatusCode && resp.StatusCode <= 299 {
 			break
 		}
+
+		time.Sleep(time.Millisecond * 500)
 	}
 
 	fmt.Printf("%s is up\n", url)
