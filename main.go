@@ -37,13 +37,13 @@ func waitFor(url string, wg *sync.WaitGroup) {
 		}
 
 		if 200 <= resp.StatusCode && resp.StatusCode <= 299 {
+			fmt.Printf("%s is up: %s\n", url, resp.Status)
 			break
 		}
 
-		time.Sleep(time.Millisecond * 500)
+		time.Sleep(time.Second)
 	}
 
-	fmt.Printf("%s is up\n", url)
 }
 
 func normalize(url string) string {
