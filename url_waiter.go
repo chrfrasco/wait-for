@@ -9,8 +9,19 @@ import (
 	"time"
 )
 
+type responseLike interface{}
+
+type getRequestFunc = func(url string) (resp *http.Response, err error)
+
 type urlWaiter struct {
-	wg *sync.WaitGroup
+	wg  *sync.WaitGroup
+	get getRequestFunc
+}
+
+func newURLWaiter(get getRequestFunc) *urlWaiter {
+	uw := new(urlWaiter)
+	uw.get = get
+	return uw
 }
 
 func (uw *urlWaiter) waitForURLs(urls []string) {
@@ -32,7 +43,7 @@ func (uw *urlWaiter) waitForURL(url string) {
 	url = normalize(url)
 
 	for {
-		resp, err := http.Get(url)
+		resp, err := uw.get(url)
 		if err != nil {
 			log.Fatalf("could not fetch %s: %v", url, err)
 		}
