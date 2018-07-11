@@ -1,6 +1,7 @@
 package main
 
 import (
+	"net/http"
 	"os"
 )
 
@@ -10,6 +11,6 @@ func main() {
 }
 
 func waitForUrls(urls []string) {
-	urlWaiter := new(urlWaiter)
+	urlWaiter := newURLWaiter(http.Get)
 	urlWaiter.waitForURLs(urls)
 }
