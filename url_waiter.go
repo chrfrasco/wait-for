@@ -9,8 +9,6 @@ import (
 	"time"
 )
 
-type responseLike interface{}
-
 type getRequestFunc = func(url string) (resp *http.Response, err error)
 
 type urlWaiter struct {
