@@ -61,5 +61,9 @@ func normalize(url string) string {
 		url = fmt.Sprintf("http://localhost%s", url)
 	}
 
+  if !strings.HasPrefix(url, "http") {
+    url = fmt.Sprintf("http://%s", url)
+  }
+
 	return url
 }
